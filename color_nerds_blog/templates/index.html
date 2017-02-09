@@ -6,13 +6,17 @@
 
 <body>
     
-<header></header>
-<form>
-    <h2>Add a Food</h2>
-    <input type = "text" name ="food">
-    <button>Add</button>
-</form>
-
+<header>
+    <h1 class = "title"> Color Nerds </h1>
+    <div class = "login">
+        {% block login %}
+        {% endblock %} 
+    </div>
+</header>
+{% block signup %}
+{% endblock %}
+{% block content %}
+{% endblock %}
 <footer></footer>
 </body>
 </html>
