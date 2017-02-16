@@ -2,4 +2,5 @@
     "eslint.enable": false,
     "tslint.enable": false,
     "vsicons.presets.angular": false
+    
 }

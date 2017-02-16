@@ -3,14 +3,22 @@
 
 <!-- Post Form -->
 {% block content %}
-<form method = "post">
+    <h2>NEW POST</h2>
+
+    <form method = "post">
+    <label>
     <h2>Add A Post</h2>
 <div class = "title_entry">
-    <input type = "text" name ="title">
+    <input type = "text" name ="title" value="{{ title }}">
 </div>
+    </label>
+   <label>
 <div class = "post_entry">
-    <textarea name = "post"></textarea>
+    <textarea name = "content">{{ content }}</textarea>
 </div>
-    <button>Post</button>
-</form>
+   </label>
+
+    <div class="error">{{error}}</div>
+
+    <input type="submit">
 {% endblock %}
