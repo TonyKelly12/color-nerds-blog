@@ -6,19 +6,36 @@ Created on Jan 31, 2017
 import os
 import random
 import re
+import cgi
+import urllib
 import webapp2
 import jinja2
 import hmac
+import time
 import hashlib
+import random
+from functools import wraps
 from string import letters
-from google.appengine.ext import db
+from google.appengine.ext import ndb
+#from gcloud import datastore
+#gcloud environment variables
+#from oauth2client.client import GoogleCredentials
+#credentials = GoogleCredentials.get_application_default()
 
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+#projectID = "color-nerds-blog"
+#os.environ["GCLOUD_TESTS_PROJECT_ID"] = projectID
+#os.environ["GCLOUD_TESTS_DATASET_ID"] = projectID
+#datastore.set_default_dataset_id(projectID)
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 secret = 'UwDx^YBPG8@5&mQY'
 
                                 #### Global Functions #####
+def gen_id():
+    u_id = str(random.uniform(0, 1))
+    return u_id
 #this function is for rendering
 def render_str(template, **params):
     t = jinja_env.get_template(template)
@@ -50,9 +67,23 @@ def valid_pw(username, password, h):
     salt = h.split(',')[0]
     return h == make_pw_hash(username, password, salt)
 
-#this function creates a user key
+#this function gets the user key
 def user_key(group = 'default'):
-    return db.Key.from_path('user', group)
+    return ndb.Key('User', group)
+
+# this function gets the post key
+def post_key(group='default'):
+    return ndb.Key('Post', group, parent=User.key)
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*a, **kw):
+        if User.session:
+            print User.session
+            return f(*a, **kw)
+        else:
+            return User.redirect('/signup')
+    return wrap
 
                    ##### Main WEbApp Handler + Render funcions #####
 
@@ -86,7 +117,8 @@ class Handler(webapp2.RequestHandler):
 
     #this function logs user in
     def login(self, user):
-        self.set_cookie('user_id', str(user.key().id()))
+        self.set_cookie('user_id', str(user.key.id()))
+        self.session = True
 
     #this function logs user out
     def logout(self):
@@ -105,12 +137,11 @@ def render_post(response, post):
     
                                 ##### Post DataBase #####
 
-class Post(db.Model):
-    #user_id = db.IntegerProperty(required = True)
-    title = db.StringProperty(required=True)
-    content = db.TextProperty(required=True)
-    created = db.DateTimeProperty(auto_now_add=True)
-    last_mod = db.DateTimeProperty(auto_now=True)
+class Post(ndb.Model):
+    title = ndb.StringProperty(required=True)
+    content = ndb.TextProperty(required=True)
+    created = ndb.DateTimeProperty(auto_now_add=True)
+    last_mod = ndb.DateTimeProperty(auto_now=True)
     #hashtag = db.StringProperty(required = False)
     #likes = db.IntegerProperty(required = True)
 
@@ -121,41 +152,48 @@ class Post(db.Model):
 
                                ####User Data Base#######
 
-class User(db.Model):
-    #u_id = db.IntegerProperty#
-    username = db.StringProperty(required=True)
-    pw_hash = db.StringProperty(required=True)
-    email = db.EmailProperty
+class User(ndb.Model):
+    username = ndb.StringProperty(required=True)
+    pw_hash = ndb.StringProperty(required=True)
+    session = ndb.BooleanProperty(required=True)
 
     #this method allows lookup by id for user class
     @classmethod
     def by_id(cls, uid):
         return cls.get_by_id(uid, parent=user_key())
 
+
     # this method allows lookup by name for user class
     @classmethod
     def by_name(cls, username):
-        u = cls.all().filter('username =', username).get()
+        u = cls.query().filter(cls.username == username).get()
         return u
+
 
     # this method creates user but does not store in db
     @classmethod
-    def register(cls, username, pw, email=None):
-        pw_hash = make_pw_hash(username, pw)
-        return cls(parent=user_key(),
-                    username=username,
-                    pw_hash=pw_hash,
-                    email=email)
+    def register(cls, username, pw):
 
-    #this method validates login of user
+        pw_hash = make_pw_hash(username, pw)
+
+        return cls(parent=user_key(),
+                   username=username,
+                   pw_hash=pw_hash,
+                   )
+
+    # this method validates login of user
     @classmethod
     def login(cls, username, pw):
         u = cls.by_name(username)
         if u and valid_pw(username, pw, u.pw_hash):
+            u.session = True
             return u
 
 
-                                   ###  Main Index  ###
+
+
+
+                ###  Main Index  ###
 
 class Index(Handler):
    def render_front(self):
@@ -164,48 +202,51 @@ class Index(Handler):
    def get(self):
      self.render_front()
 
-def blog_key(name='default'):
-    return db.Key.from_path('blogs', name)
+# Returns all blogs for main page
 
-##### Welcome Page. Signup Login Options ####
+def blog_key(name='default'):
+    return ndb.Key('blogs', name)
+
+# Welcome Page. Signup Login Options #
 
 class Welcome(Handler):
     def get(self):
         username = self.request.get('username')
+
         if valid_username(username):
             self.render('welcome.html', username=username)
         else:
             self.redirect('/signup')
 
-                ####### The Front Blog Page Showing 20 Entries #######
+# The Front Blog Page Showing 20 Entries #
 
 class BlogPage(Handler):
     def get(self):
-        posts = db.GqlQuery("select * from Post order by created desc limit 20")
+        posts = Post.query().order(Post.created).fetch(20)
         self.render("blog.html", posts=posts)
 
-                        ####### Post Page Permalink ######
+# Post Page Permalink #
 
 class PostPage(Handler):
     def get(self, post_id):
-        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-        post = db.get(key)
+        key = ndb.Key('Post', int(post_id), parent=user_key())
+        post = key.get()
 
         if not post:
             self.error(404)
             return
         self.render("permalink.html", post=post)
 
-                             ###### New Post Page ######
+# New Post Page #
 
 class NewPost(Handler):
+    @login_required
     def get(self):
         self.render("newpost.html")
 
     def post(self):
         title = self.request.get("title")
         content = self.request.get("content")
-
         if title and content:
             p = Post(parent=blog_key(), title=title, content=content)
             p.put()
@@ -214,7 +255,7 @@ class NewPost(Handler):
             error = "You need a title and a post"
             self.render("newpost.html", title=title, content=content, error=error)
 
-                                  #### Login Page ###
+# Login Page #
 
 class Login(Handler):
     def get(self):
@@ -232,7 +273,7 @@ class Login(Handler):
             msg = "Invalid Login"
             self.render("login.html", error=msg)
 
-                                  #### Logout Page ###
+# Logout Page #
 
 class Logout(Handler):
     def get(self):
@@ -240,7 +281,7 @@ class Logout(Handler):
         self.redirect('/login')
 
 
-                                ###### Signup Page#######
+# Signup Page#
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
@@ -264,9 +305,9 @@ class Signup(Handler):
         self.password = self.request.get('password')
         self.verify = self.request.get('verify')
         self.email = self.request.get('email')
-
+        #self.u_id = gen_id()
         params = dict(username=self.username,
-                      email=self.email)
+                      email=self.email,)
 
         if not valid_username(self.username):
             params['error_username'] = "That's not a valid username."
@@ -293,7 +334,7 @@ class Signup(Handler):
 
 class Signup2(Signup):
     def done(self):
-        self.redirect('/blog/welcome?username='+self.username)
+        self.redirect('/blog/welcome?username='+self.username + self.u_id)
 
 class Register(Signup):
     def done(self):
@@ -303,7 +344,9 @@ class Register(Signup):
             msg = 'That user already exists.'
             self.render('signup.html', error_username=msg)
         else:
-            u=User.register(self.username, self.password, self.email)
+
+            u = User.register(self.username, self.password,)
+            u.session = False
             u.put()
 
             self.login(u)

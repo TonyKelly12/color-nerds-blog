@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "color-nerds-blog",
+  "private_key_id": "fa86a8c7577e41718f4c66199481da5d2f320bcc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDqmcoqDLNPTAXy\nsNKen/f8OxGA4ZOtkEymL0q6AjGh33z+2yeb6vatD56XYn9m1lmHSebjhyhtO5e6\n7i8y/wNkcqaQeNItZZInujuAL0p0P6fITX6GupcR6ZUTNPLQHdJceBKrVeqb/qGz\nuU8CAPvNkC0ZmZxMe1BFegmt7Na+xKbIXVKmxKNo6mMPmZO6Uwnn+JoTOw2ARN8Q\nGQYW3UeGLyevhttPyF0lpQNXsFw0CSZvIl6YJSeVHKTmBOAlcKcRWkliSksrpp6A\n/CzQhrL+9BC8dQgHuIASDEvxB5Iu6gOOTUGQjmsP7caevSfhH7rY06c4ZZuHIMFw\nMWhIVSjHAgMBAAECggEAO81MLX/jTXlxorXUWr8oddGQ2qul+35nK42unM/mWv8f\nW8/9vs8cZm0u3iQrmclWNRhvlNxlP8MLIImK2pMLCFX5g6Zo3U2g/iOI+1oSvqNj\nX7nxYOK7k8NZTvYWV1rivtOU3rwd+/nium+oZjhd976i4H25y/07Lxq20PEopKP7\nbT3lPIreGonCw7MF19iucs2MYJiXRuZlN0z17V9eUxB/7KFuId+qOLfN+9DIzlDW\nCSEKl1I+SSNmjvPHsUsJZcZs01PXXXhmj4IVluDauG6HXaRjHsUqFU2oNPGJdtCW\nDEYLeKLPX4h9FmAN1wnVF/fxwERMZO1GAfFxsBHLUQKBgQD7JCvv5XjPhzfJ1Q4+\nIJCMqUa2zm1uX0FCRXbQOq9h6L5ihR6DWTZg9B+KfZ0DLTR7LaW++W7EHyf0wxTf\nLlna2jILV7KLwYkAa70/A3jX5fHw1TJbpzlG8xQgrB/E6Br+cvvtKuFPV00O31/u\n6+P3U/m15CHDCMP8Swh986kcZQKBgQDvI7KWycDceNqilaHl6D2I/akavSRLj4EF\nXbWHvtw5vHlWHKBDj/7f9gip/GOimEpCOg22wN8vxIK2yBe2mPV5Hf+IdSzWiI1r\ndFXtsb2A+UypsVMHC7DEcCi48bNzC2HPH3v+wdRWUHVfWK1NMwYwiSghEzMCjdg0\nYKfFj52PuwKBgHZeSRsr0/I0cDX/5lOf86Fok3zL9MYFvXNn3CUu08TY9wrmZUhR\nPxEZXthedieuIcNA85L8a5mieamiXO8IIK/HEblI302BrXn2Td8qWsWfipYRVkfe\nnF91aHIxzlN3dmmhdl4FTOahZh9xZvzsT6kd+l8hpEwRkJYUI2+B7Z4FAoGADRL3\njZTkLWmSEnd5zXb//kBYAXU7ycHDvQZdiVle8u0h+RpBjNAPkDEEUj7RN695x9si\nqs4qpZLpzpJr8Xi1WvTP5qb5V5VJnglTNVaVVLrMfS6LqoPyGxtCrrHQLMb/hvJi\ntg/kyv9FG3xepSzX9slY304MaORWYK60HXH3nEcCgYBuxDf0fX91395Tn1S7QTxr\nxBXeayMf0q0L0lDtBAJCnKBjBLbt/QwBmbQPnosa1+Dww2Hb0xIl7el0pFBj2cue\nebsidrhExxNq9CfxVL0eVhfup7ARNvWap3P2q5MFglKO4pRAwb6I3xSi/8CohxWa\nY+ZXE5pEmBCzs6aYoF31XA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "color-nerds-blog@appspot.gserviceaccount.com",
+  "client_id": "114303179277525414917",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/color-nerds-blog%40appspot.gserviceaccount.com"
+}
