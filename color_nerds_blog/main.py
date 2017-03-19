@@ -69,7 +69,7 @@ def valid_pw(username, password, h):
 
 #this function gets the user key
 def user_key(group = 'default'):
-    return ndb.Key('User', group)
+    return ndb.Key('User', 'group')
 
 # this function gets the post key
 def post_key(group='default'):
@@ -77,14 +77,13 @@ def post_key(group='default'):
 
 def login_required(f):
     @wraps(f)
-    def wrap(*a, **kw):
-        if User.session:
-            print User.session
-            return f(*a, **kw)
+    def wrap(self, *a, **kw):
+        if self.user:
+            #print User.session
+            return f(self, *a, **kw)
         else:
-            return User.redirect('/signup')
+            return self.redirect('/signup')
     return wrap
-
                    ##### Main WEbApp Handler + Render funcions #####
 
 class Handler(webapp2.RequestHandler):
@@ -118,7 +117,7 @@ class Handler(webapp2.RequestHandler):
     #this function logs user in
     def login(self, user):
         self.set_cookie('user_id', str(user.key.id()))
-        self.session = True
+
 
     #this function logs user out
     def logout(self):
@@ -138,6 +137,7 @@ def render_post(response, post):
                                 ##### Post DataBase #####
 
 class Post(ndb.Model):
+    #userid = ndb.StringProperty(required=True)
     title = ndb.StringProperty(required=True)
     content = ndb.TextProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
@@ -155,7 +155,7 @@ class Post(ndb.Model):
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     pw_hash = ndb.StringProperty(required=True)
-    session = ndb.BooleanProperty(required=True)
+
 
     #this method allows lookup by id for user class
     @classmethod
@@ -186,7 +186,6 @@ class User(ndb.Model):
     def login(cls, username, pw):
         u = cls.by_name(username)
         if u and valid_pw(username, pw, u.pw_hash):
-            u.session = True
             return u
 
 
@@ -210,6 +209,7 @@ def blog_key(name='default'):
 # Welcome Page. Signup Login Options #
 
 class Welcome(Handler):
+    @login_required
     def get(self):
         username = self.request.get('username')
 
@@ -229,8 +229,9 @@ class BlogPage(Handler):
 
 class PostPage(Handler):
     def get(self, post_id):
-        key = ndb.Key('Post', int(post_id), parent=user_key())
+        key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
+
 
         if not post:
             self.error(404)
@@ -250,7 +251,7 @@ class NewPost(Handler):
         if title and content:
             p = Post(parent=blog_key(), title=title, content=content)
             p.put()
-            self.redirect('/blog/%s' % str(p.key().id()))
+            self.redirect('/blog/%s' % str(p.key.id()))
         else:
             error = "You need a title and a post"
             self.render("newpost.html", title=title, content=content, error=error)
@@ -276,6 +277,7 @@ class Login(Handler):
 # Logout Page #
 
 class Logout(Handler):
+    @login_required
     def get(self):
         self.logout()
         self.redirect('/login')
@@ -346,13 +348,13 @@ class Register(Signup):
         else:
 
             u = User.register(self.username, self.password,)
-            u.session = False
             u.put()
 
             self.login(u)
             self.redirect('/blog/welcome2')
 
 class Welcome2(Handler):
+    @login_required
     def get(self):
         if self.user:
             self.render('welcome.html', username=self.user.username)
