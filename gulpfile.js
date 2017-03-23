@@ -13,14 +13,14 @@ var gulp = require('gulp'),
 
 
 gulp.task('beautify', function () {
-gulp.src('./color_nerds_blog/frameworks/Js/*.js')
+gulp.src('./color_nerds_blog/static/Js/*.js')
     .pipe(beautify({indent_size: 2}))
     .on('error', errorLog)
     .pipe(gulp.dest('./color_nerds_blog/'));
 });
 
 gulp.task('sass', function () {
-  return gulp.src('./color_nerds_blog/frameworks/Sass/**/*.scss')
+  return gulp.src('./color_nerds_blog/static/Sass/**/*.scss')
     .pipe(sass().on('error', errorLog))
     .pipe(gulp.dest('./color_nerds_blog/css'))
     .pipe(livereload());
@@ -29,8 +29,8 @@ gulp.task('sass', function () {
 gulp.task('watch', function () {
   livereload.server;
   livereload.listen();
-  gulp.watch('./color_nerds_blog/frameworks/Js/*.js', ['beautify'] );
-  gulp.watch('./color_nerds_blog/frameworks/Sass/*.sass', ['sass'] );
+  gulp.watch('./color_nerds_blog/static/Js/*.js', ['beautify'] );
+  gulp.watch('./color_nerds_blog/static/Sass/*.sass', ['sass'] );
 });
 
  

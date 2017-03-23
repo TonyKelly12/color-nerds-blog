@@ -196,7 +196,7 @@ class User(ndb.Model):
 
 class Index(Handler):
    def render_front(self):
-      self.render("index.html")
+      self.render("main.html")
 
    def get(self):
      self.render_front()
@@ -228,6 +228,7 @@ class BlogPage(Handler):
 # Post Page Permalink #
 
 class PostPage(Handler):
+    @login_required
     def get(self, post_id):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
