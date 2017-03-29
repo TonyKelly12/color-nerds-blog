@@ -46,13 +46,13 @@
                     <div class="pixel pixel22 sizeS"></div>
                 </div>
             </div>
-            <h2 class="project-title">Tony Kelly's Portfolio</h2>
+            <h2 class="project-title">Click Below To See Top 3 Stories</h2>
             <p class="button-container">
                 <a href="#" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
-                    <span class="bp-text">View Projects</span>
+                    <span class="bp-text">Click</span>
                 </a>
             </p>
             <p class="project-subtitle">Skrollr in action</p>
@@ -90,13 +90,13 @@
                     <div class="pixel pixel22 sizeS"></div>
                 </div>
             </div>
-            <h2 class="project-title">Color Nerds </h2>
+            <h2 class="project-title">{{ posts[0].title | safe }}</h2>
             <p class="button-container">
                 <a href="#" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
-                    <span class="bp-text">View Projects</span>
+                    <span class="bp-text">Read More</span>
                 </a>
             </p>
             <p class="project-subtitle">Web design & Development</p>
@@ -133,13 +133,13 @@
                     <div class="pixel pixel22 sizeS"></div>
                 </div>
             </div>
-            <h2 class="project-title">Logo Design</h2>
+            <h2 class="project-title">{{ posts[1].title | safe }}</h2>
             <p class="button-container">
                 <a href="#" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
-                    <span class="bp-text">View Projects</span>
+                    <span class="bp-text">Read More</span>
                 </a>
             </p>
             <p class="project-subtitle">Skrollr in action</p>
@@ -176,13 +176,13 @@
                     <div class="pixel pixel22 sizeS"></div>
                 </div>
             </div>
-            <h2 class="project-title">Check Out My Github Repo's!</h2>
+            <h2 class="project-title">{{ posts[2].title | safe }}</h2>
             <p class="button-container">
                 <a href="#" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
-                    <span class="bp-text">View Projects</span>
+                    <span class="bp-text">Read More</span>
                 </a>
             </p>
             <p class="project-subtitle">Skrollr in action</p>
@@ -190,5 +190,7 @@
 
     </div>
 </div>
+
+
 
 {% endblock %}

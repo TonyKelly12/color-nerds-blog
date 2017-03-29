@@ -137,17 +137,16 @@ def render_post(response, post):
                                 ##### Post DataBase #####
 
 class Post(ndb.Model):
-    #userid = ndb.StringProperty(required=True)
+
     title = ndb.StringProperty(required=True)
     content = ndb.TextProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
-    #hashtag = db.StringProperty(required = False)
-    #likes = db.IntegerProperty(required = True)
+
 
     #this functions adds line breaks in post content
     def render(self): #NOT Working
-        self._render_text = self.content.replace('\n', '<br>')
+        self.content = self.content.replace('<br>', '\n')
         return render_str("post.html", p=self)
 
                                ####User Data Base#######
@@ -196,10 +195,12 @@ class User(ndb.Model):
 
 class Index(Handler):
    def render_front(self):
-      self.render("main.html")
+       posts = Post.query().order(Post.created).fetch(3)
+       self.render("main.html", posts=posts)
 
    def get(self):
-     self.render_front()
+
+    self.render_front()
 
 # Returns all blogs for main page
 

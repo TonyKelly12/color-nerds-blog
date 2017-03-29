@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 
 {% block post %}
+    <div class="indipost">
   {{post.render() | safe}}
+    </div>
 {% endblock %}

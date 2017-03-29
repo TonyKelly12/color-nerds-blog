@@ -1,10 +1,12 @@
 <link rel="stylesheet" href="../static/Sass/main.sass">{% extends "index.html" %}
 
 {% block content %}
-
+    <div class="postpage">
     {% for p in posts %}
+    <div class="indipost">
         {{ p.render() | safe }}
         <br><br>
+    </div>
     {% endfor %}
+      </div>
 {% endblock %}
-    

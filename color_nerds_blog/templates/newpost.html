@@ -3,22 +3,28 @@
 
 <!-- Post Form -->
 {% block content %}
-    <h2>NEW POST</h2>
-
+    <div class="newpost_header"><h1>NEW POST</h1></div>
+    <div class="newpost_title"><h3>Title</h3></div>
+<div class="container">
+    <div class="container-fluid">
     <form method = "post">
-    <label>
-    <h2>Add A Post</h2>
-<div class = "title_entry">
-    <input type = "text" name ="title" value="{{ title }}">
+
+
+<div class = "col-md-12 title_entry">
+    <input class="post_title" type = "text" name ="title" value="{{ title }}">
 </div>
-    </label>
-   <label>
-<div class = "post_entry">
-    <textarea name = "content">{{ content }}</textarea>
+
+<div class = "col-md-12 post_entry">
+    <textarea name = "content" >{{ content }}</textarea>
 </div>
-   </label>
+
 
     <div class="error">{{error}}</div>
 
-    <input type="submit">
+        <div class="col-md-12 submit_post">
+        <input type="submit">
+        </div>
+    </form>
+    </div>
+</div>
 {% endblock %}
