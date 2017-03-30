@@ -145,17 +145,17 @@ textarea {
 }
 body{
     font:16px/1.5 'Open Sans', Railway, Arial, sans-serif ;
-    background-color: #555555;
+    background-color: cadetblue;
     color: whitesmoke;
     overflow-x: hidden;
     height: 100%;
     transition: background-color 0.4s linear;
 }
 body.project01{
-    background-color: cadetblue;
+    background-color: dimgray;
 }
 body.project02{
-    background-color: greenyellow;
+    background-color: darkolivegreen;
 }
 body.project03{
     background-color: cornflowerblue;
