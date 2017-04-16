@@ -5,8 +5,26 @@
     {% for p in posts %}
     <div class="indipost">
         {{ p.render() | safe }}
+
         <br><br>
+    </div>
+
+<div class="container">
+    <div class="container-fluid">
+    <form method = "post" class="comment">
+
+        <div class = "col-md-12 comment_entry">
+        <textarea name ="comment"  >{{ comment }}</textarea>
+        </div>
+
+        <div class="col-md-12 submit_comment">
+        <input type="submit">
+        </div>
+
+    </form>
+    </div>
     </div>
     {% endfor %}
       </div>
+
 {% endblock %}

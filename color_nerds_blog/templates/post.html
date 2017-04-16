@@ -1,6 +1,10 @@
 <div class="post">
   <div class="post-heading">
-    <div class="post-title">
+    <div class="post-user">
+    {{p.username | safe}}
+  </div>
+
+      <div class="post-title">
       {{p.title}}
     </div>
 
@@ -12,4 +16,6 @@
   <div class="post-content">
     {{p.content | safe}}
   </div>
+    <br><br>
+
 </div>

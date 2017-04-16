@@ -92,7 +92,7 @@
             </div>
             <h2 class="project-title">{{ posts[0].title | safe }}</h2>
             <p class="button-container">
-                <a href="#" class="button">
+                <a href="/blog/{{ posts[0].key.id() }}" class="button" id="story1">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
@@ -135,7 +135,7 @@
             </div>
             <h2 class="project-title">{{ posts[1].title | safe }}</h2>
             <p class="button-container">
-                <a href="#" class="button">
+                <a href="/blog/{{ posts[1].key.id() }}" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>
@@ -178,7 +178,7 @@
             </div>
             <h2 class="project-title">{{ posts[2].title | safe }}</h2>
             <p class="button-container">
-                <a href="#" class="button">
+                <a href="/blog/{{ posts[2].key.id() }}" class="button">
                     <span class="bp bp-left"></span>
                     <span class="bp bp-mid"></span>
                     <span class="bp bp-right"></span>

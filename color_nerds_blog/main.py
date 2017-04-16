@@ -32,6 +32,11 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 
 secret = 'UwDx^YBPG8@5&mQY'
 
+
+
+
+
+
                                 #### Global Functions #####
 def gen_id():
     u_id = str(random.uniform(0, 1))
@@ -75,6 +80,10 @@ def user_key(group = 'default'):
 def post_key(group='default'):
     return ndb.Key('Post', group, parent=User.key)
 
+# this function gets the comment key
+def comment_key(group='default'):
+    return ndb.Key('Comment', group, parent=Post.key)
+
 def login_required(f):
     @wraps(f)
     def wrap(self, *a, **kw):
@@ -82,9 +91,17 @@ def login_required(f):
             #print User.session
             return f(self, *a, **kw)
         else:
-            return self.redirect('/signup')
+            return self.redirect('/login')
     return wrap
-                   ##### Main WEbApp Handler + Render funcions #####
+
+
+
+
+
+
+
+
+        ##### Main WEbApp Handler + Render funcions #####
 
 class Handler(webapp2.RequestHandler):
 
@@ -134,27 +151,17 @@ def render_post(response, post):
     response.out.write('<b>' + post.title + '</b><br>')
     response.out.write(post.content)
     
-                                ##### Post DataBase #####
-
-class Post(ndb.Model):
-
-    title = ndb.StringProperty(required=True)
-    content = ndb.TextProperty(required=True)
-    created = ndb.DateTimeProperty(auto_now_add=True)
-    last_mod = ndb.DateTimeProperty(auto_now=True)
 
 
-    #this functions adds line breaks in post content
-    def render(self): #NOT Working
-        self.content = self.content.replace('<br>', '\n')
-        return render_str("post.html", p=self)
 
-                               ####User Data Base#######
+
+
+####User Data Base#######
 
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     pw_hash = ndb.StringProperty(required=True)
-
+    post = ndb.KeyProperty
 
     #this method allows lookup by id for user class
     @classmethod
@@ -191,21 +198,102 @@ class User(ndb.Model):
 
 
 
-                ###  Main Index  ###
+
+##### Post DataBase ###
+class Post(ndb.Model):
+    title = ndb.StringProperty(required=True)
+    content = ndb.TextProperty(required=True)
+    created = ndb.DateTimeProperty(auto_now_add=True)
+    last_mod = ndb.DateTimeProperty(auto_now=True)
+    username = ndb.StringProperty(required=False)
+    comment = ndb.StringProperty(required=False)
+
+    #this method allows lookup by id for user class
+    @classmethod
+    def by_id(cls, pid):
+        return cls.get_by_id(pid, parent=post_key())
+
+
+    # this method allows lookup by name for user class
+    @classmethod
+    def by_title(cls, title):
+        p = cls.query().filter(cls.title == title).get()
+        return p
+
+    # this functions adds line breaks in post content
+
+    def render(self):  # NOT Working
+        self.content = self.content.replace('<br>', '\n')
+        return render_str("post.html", p=self)
+
+
+
+
+
+
+
+
+            ##### Comment DataBase #####
+
+class Comment(ndb.Model):
+    comment = ndb.StringProperty(required=True)
+    username = ndb.KeyProperty(required=True)
+    post = ndb.KeyProperty(required=True)
+    created = ndb.DateTimeProperty(auto_now_add=True)
+    last_mod = ndb.DateTimeProperty(auto_now=True)
+    # this functions adds line breaks in post content
+    @classmethod
+    def by_id(cls, cid):
+        return cls.get_by_id(cid, parent=comment_key())
+
+    # this method allows lookup by name for user class
+    @classmethod
+    def by_post_title(cls, post_title):
+        c = cls.query().filter(cls.post.title == post_title).get()
+        return c
+
+
+    def render(self):  # NOT Working
+        self.content = self.content.replace('<br>', '\n')
+        return render_str("comment.html", c=self)
+
+
+
+    # Post Page Permalink #
+class CommentPage(Handler):
+    @login_required
+    def get(self, comment_id):
+        key = ndb.Key(Comment, int(comment_id), parent=comment_key())
+        comment = key.get()
+        if not comment:
+            self.error(404)
+            return
+        self.render("comment.html", comment=comment, username=self.user.username)
+
+
+
+
+                    ###  Main Index  ###
 
 class Index(Handler):
-   def render_front(self):
-       posts = Post.query().order(Post.created).fetch(3)
-       self.render("main.html", posts=posts)
-
-   def get(self):
-
-    self.render_front()
+    def render_front(self):
+        posts = Post.query().order(Post.created).fetch(3)
+        if self.user:
+            self.render("main.html", posts=posts, username=self.user.username)
+        else:
+            self.render("main.html", posts=posts)
+    def get(self):
+        self.render_front()
 
 # Returns all blogs for main page
 
 def blog_key(name='default'):
     return ndb.Key('blogs', name)
+
+
+
+
+
 
 # Welcome Page. Signup Login Options #
 
@@ -219,12 +307,31 @@ class Welcome(Handler):
         else:
             self.redirect('/signup')
 
+
+
+
+
 # The Front Blog Page Showing 20 Entries #
 
 class BlogPage(Handler):
+    @login_required
     def get(self):
         posts = Post.query().order(Post.created).fetch(20)
-        self.render("blog.html", posts=posts)
+
+        self.render("blog.html", posts=posts, username=self.user.username)
+
+    def post(self):
+
+        comment = self.request.get("comment")
+        if self.user and comment:
+            c = Comment(parent=post_key(), comment=comment, username=self.user.username)
+            c.put()
+            self.render("comment.html", comment=comment, username=self.user.username)
+        else:
+            self.render("blog.html", username=self.user.username)
+
+
+
 
 # Post Page Permalink #
 
@@ -238,7 +345,11 @@ class PostPage(Handler):
         if not post:
             self.error(404)
             return
-        self.render("permalink.html", post=post)
+        self.render("permalink.html", post=post, username=self.user.username)
+
+
+
+
 
 # New Post Page #
 
@@ -251,12 +362,14 @@ class NewPost(Handler):
         title = self.request.get("title")
         content = self.request.get("content")
         if title and content:
-            p = Post(parent=blog_key(), title=title, content=content)
+            p = Post(parent=blog_key(), title=title, content=content, username=self.user.username)
             p.put()
             self.redirect('/blog/%s' % str(p.key.id()))
         else:
             error = "You need a title and a post"
-            self.render("newpost.html", title=title, content=content, error=error)
+            self.render("newpost.html", title=title, content=content, error=error, username=self.user.username)
+
+
 
 # Login Page #
 
@@ -276,6 +389,10 @@ class Login(Handler):
             msg = "Invalid Login"
             self.render("login.html", error=msg)
 
+
+
+
+
 # Logout Page #
 
 class Logout(Handler):
@@ -285,7 +402,11 @@ class Logout(Handler):
         self.redirect('/login')
 
 
-# Signup Page#
+
+
+
+
+#Signup Page#
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
@@ -336,9 +457,11 @@ class Signup(Handler):
     def done(self, *a, **kw):
         raise NotImplementedError
 
+
 class Signup2(Signup):
     def done(self):
         self.redirect('/blog/welcome?username='+self.username + self.u_id)
+
 
 class Register(Signup):
     def done(self):
@@ -355,6 +478,10 @@ class Register(Signup):
             self.login(u)
             self.redirect('/blog/welcome2')
 
+
+
+#Welcome Page#
+
 class Welcome2(Handler):
     @login_required
     def get(self):
@@ -362,6 +489,19 @@ class Welcome2(Handler):
             self.render('welcome.html', username=self.user.username)
         else:
             self.redirect('/signup')
+
+
+
+
+
+
+#Login Page#
+class LoginName(Handler):
+        @login_required
+        def get(self):
+            if self.user:
+                self.render('login-name.html', username=self.user.username)
+
 
 ### URL Handlers #####
 
@@ -374,7 +514,8 @@ app = webapp2.WSGIApplication([
     ("/logout", Logout),
     ("/blog/?", BlogPage),
     ("/blog/([0-9]+)", PostPage),
-    ("/blog/newpost", NewPost)
+    ("/blog/newpost", NewPost),
+    ("/comment/([0-9]+)", CommentPage)
 
 ],
 debug=True)

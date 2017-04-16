@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="comment">
+  <div class="comment-heading">
+    <div class="comment-user">
+    {{c.username | safe}}
+  </div>
+
+    <div class="comment-date">
+      {{c.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="comment-content">
+    {{c.comment | safe}}
+  </div>
+</div>
