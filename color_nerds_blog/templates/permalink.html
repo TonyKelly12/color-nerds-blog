@@ -3,5 +3,42 @@
 {% block post %}
     <div class="indipost">
   {{post.render() | safe}}
+        <br><br>
+
+<div class="container">
+    <div class="container-fluid">
+    <form method = "post" class="comment">
+
+
+        <div class = "col-md-12 comment_entry">
+        <textarea name ="comment"  >{{ comment }}</textarea>
+        </div>
+
+        <div class="col-md-12 submit_comment">
+        <input type="submit">
+        </div>
+
+    </form>
+</div>
+</div>
     </div>
+     <div class="comment">
+ {% for c in comments %}
+  <div class="comment-heading">
+    <div class="comment-user">
+    {{c.username | safe}}
+  </div>
+
+
+    <div class="comment-date">
+      {{c.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="comment-content">
+    {{c.comments | safe}}
+  </div>
+
+    <br><br>
+{% endfor %}
 {% endblock %}

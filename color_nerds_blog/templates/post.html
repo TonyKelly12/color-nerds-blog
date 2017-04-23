@@ -3,19 +3,41 @@
     <div class="post-user">
     {{p.username | safe}}
   </div>
-
-      <div class="post-title">
-      {{p.title}}
-    </div>
-
     <div class="post-date">
       {{p.created.strftime("%b %d, %Y")}}
     </div>
+        <div class="post-title">
+        {{p.title}}
+        </div>
+
+
   </div>
 
   <div class="post-content">
     {{p.content | safe}}
   </div>
     <br><br>
+</div>
+<br><br>
 
+
+     <div class="comment">
+ {% for c in comments %}
+  <div class="comment-heading">
+    <div class="comment-user">
+    {{c.username | safe}}
+  </div>
+
+
+    <div class="comment-date">
+      {{c.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="comment-content">
+    {{c.comments | safe}}
+  </div>
+
+    <br><br>
+{% endfor %}
 </div>

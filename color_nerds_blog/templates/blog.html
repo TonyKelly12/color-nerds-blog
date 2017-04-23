@@ -6,25 +6,17 @@
     <div class="indipost">
         {{ p.render() | safe }}
 
+    </div>
         <br><br>
-    </div>
-
-<div class="container">
-    <div class="container-fluid">
-    <form method = "post" class="comment">
-
-        <div class = "col-md-12 comment_entry">
-        <textarea name ="comment"  >{{ comment }}</textarea>
+        <div class="comments">
+        {% for c in comments %}
+            {% if post_id == p.blog_key %}
+                {{ c.render() | safe }}
+            {% endif %}
+            {% endfor %}
         </div>
-
-        <div class="col-md-12 submit_comment">
-        <input type="submit">
-        </div>
-
-    </form>
-    </div>
-    </div>
     {% endfor %}
       </div>
+
 
 {% endblock %}

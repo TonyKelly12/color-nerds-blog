@@ -4,12 +4,13 @@
     {{c.username | safe}}
   </div>
 
+
     <div class="comment-date">
       {{c.created.strftime("%b %d, %Y")}}
     </div>
   </div>
 
   <div class="comment-content">
-    {{c.comment | safe}}
+    {{c.comments | safe}}
   </div>
 </div>

@@ -72,17 +72,17 @@ def valid_pw(username, password, h):
     salt = h.split(',')[0]
     return h == make_pw_hash(username, password, salt)
 
-#this function gets the user key
+#this function builds the user key
 def user_key(group = 'default'):
     return ndb.Key('User', 'group')
 
-# this function gets the post key
+# this function builds the post key
 def post_key(group='default'):
-    return ndb.Key('Post', group, parent=User.key)
+    return ndb.Key('Post', group, parent=user_key.key)
 
-# this function gets the comment key
+# this function builds the comment key
 def comment_key(group='default'):
-    return ndb.Key('Comment', group, parent=Post.key)
+    return ndb.Key('Comment', group, parent=post_key.key)
 
 def login_required(f):
     @wraps(f)
@@ -147,10 +147,13 @@ class Handler(webapp2.RequestHandler):
             self.user = uid and User.by_id(int(uid))
 
 #global render function for entire post
-def render_post(response, post):
-    response.out.write('<b>' + post.title + '</b><br>')
+def render_post(response, post, comment):
+    response.out.write('<b>' + Post.title + '</b><br>')
     response.out.write(post.content)
-    
+    response.out.write(comment.comments)
+def render_comment(response, comment):
+
+    response.out.write(Comment.comments)
 
 
 
@@ -161,7 +164,7 @@ def render_post(response, post):
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     pw_hash = ndb.StringProperty(required=True)
-    post = ndb.KeyProperty
+    
 
     #this method allows lookup by id for user class
     @classmethod
@@ -198,7 +201,6 @@ class User(ndb.Model):
 
 
 
-
 ##### Post DataBase ###
 class Post(ndb.Model):
     title = ndb.StringProperty(required=True)
@@ -206,7 +208,7 @@ class Post(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
     username = ndb.StringProperty(required=False)
-    comment = ndb.StringProperty(required=False)
+
 
     #this method allows lookup by id for user class
     @classmethod
@@ -223,7 +225,7 @@ class Post(ndb.Model):
     # this functions adds line breaks in post content
 
     def render(self):  # NOT Working
-        self.content = self.content.replace('<br>', '\n')
+        self._render_text = self.content.replace('<br>', '\n')
         return render_str("post.html", p=self)
 
 
@@ -236,39 +238,30 @@ class Post(ndb.Model):
             ##### Comment DataBase #####
 
 class Comment(ndb.Model):
-    comment = ndb.StringProperty(required=True)
-    username = ndb.KeyProperty(required=True)
-    post = ndb.KeyProperty(required=True)
+
+    comments = ndb.StringProperty(required=True)
+    username = ndb.StringProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
+    post_id = ndb.IntegerProperty(required=True)
     # this functions adds line breaks in post content
     @classmethod
     def by_id(cls, cid):
         return cls.get_by_id(cid, parent=comment_key())
-
-    # this method allows lookup by name for user class
-    @classmethod
-    def by_post_title(cls, post_title):
-        c = cls.query().filter(cls.post.title == post_title).get()
-        return c
+#
+    ## this method allows lookup by name for user class
+    #@classmethod
+    #def by_comment_title(cls, comment_title):
+    #    c = cls.query().filter(cls.comment_title == comment_title).get()
+    #    return c
 
 
     def render(self):  # NOT Working
-        self.content = self.content.replace('<br>', '\n')
+        self._render_text = self.comments.replace('<br>', '\n')
         return render_str("comment.html", c=self)
 
-
-
     # Post Page Permalink #
-class CommentPage(Handler):
-    @login_required
-    def get(self, comment_id):
-        key = ndb.Key(Comment, int(comment_id), parent=comment_key())
-        comment = key.get()
-        if not comment:
-            self.error(404)
-            return
-        self.render("comment.html", comment=comment, username=self.user.username)
+
 
 
 
@@ -285,12 +278,13 @@ class Index(Handler):
     def get(self):
         self.render_front()
 
-# Returns all blogs for main page
+# Builds blogs key
 
-def blog_key(name='default'):
+def blog_key(name='post', parent=user_key):
+    return ndb.Key('blogs', name )
+
+def cmt_key(name='comment', parent=post_key):
     return ndb.Key('blogs', name)
-
-
 
 
 
@@ -317,18 +311,10 @@ class BlogPage(Handler):
     @login_required
     def get(self):
         posts = Post.query().order(Post.created).fetch(20)
+        comments = Comment.query().order(Comment.post_id)
+        self.render("blog.html", posts=posts, username=self.user.username, comments=comments )
 
-        self.render("blog.html", posts=posts, username=self.user.username)
 
-    def post(self):
-
-        comment = self.request.get("comment")
-        if self.user and comment:
-            c = Comment(parent=post_key(), comment=comment, username=self.user.username)
-            c.put()
-            self.render("comment.html", comment=comment, username=self.user.username)
-        else:
-            self.render("blog.html", username=self.user.username)
 
 
 
@@ -340,13 +326,25 @@ class PostPage(Handler):
     def get(self, post_id):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
-
+        comments = Comment.query().filter(Comment.post_id == int(post_id))
+        print "comments and post id", comments, post_id
 
         if not post:
             self.error(404)
             return
-        self.render("permalink.html", post=post, username=self.user.username)
 
+        post._render_text = post.content.replace('\n', '<br>')
+        self.render("permalink.html", post=post, comments=comments, username=self.user.username)
+
+    def post(self, post_id):
+        comments = self.request.get('comment')
+        if comments:
+            print "this is the comment:", comments
+            key = ndb.Key('Post', int(post_id), parent=blog_key())
+
+            c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username)
+            c.put()
+            self.redirect('/blog/%s' % int(post_id))
 
 
 
@@ -514,8 +512,8 @@ app = webapp2.WSGIApplication([
     ("/logout", Logout),
     ("/blog/?", BlogPage),
     ("/blog/([0-9]+)", PostPage),
-    ("/blog/newpost", NewPost),
-    ("/comment/([0-9]+)", CommentPage)
+    ("/blog/newpost", NewPost)
+
 
 ],
 debug=True)
