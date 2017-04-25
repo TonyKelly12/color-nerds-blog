@@ -2,26 +2,26 @@
 
 {% block login %}
     <h1>Log In</h1>
-<div class="container">
-    <div class="container-fluid">
-        <form method="post">
-            <div class=" col-md-4 username">
-                <label for = "username">Username</label>
-                <input  type="text" name="username" required = "required"/><br/>
-            </div>
-                <div class=" col-md-4 password">
-                    <label for = "password">Password</label>
-                    <input   type="password" name="password" required = "required"/>
+    <div class="container">
+        <div class="container-fluid">
+            <form method="post">
+                <div class=" col-md-4 username">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" required="required"/><br/>
                 </div>
-                    <div class=" col-md-2 submit">
-                        <input type="submit" value="Submit" />
-                    </div>
+                <div class=" col-md-4 password">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" required="required"/>
+                </div>
+                <div class=" col-md-2 submit">
+                    <input type="submit" value="Submit"/>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
-</div>
     <div class="col-md-12 color_nerd">
-    <img src="../static/img/png/color_nerd_bkgd.png" alt="colornerds" height="100%" width="100%">
+        <img src="../static/img/png/color_nerd_bkgd.png" alt="colornerds" height="100%" width="100%">
     </div>
 {% endblock %}
 

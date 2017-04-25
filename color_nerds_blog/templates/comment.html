@@ -1,16 +1,16 @@
 <div class="comment">
-  <div class="comment-heading">
-    <div class="comment-user">
-    {{c.username | safe}}
-  </div>
+    <div class="comment-heading">
+        <div class="comment-user">
+            {{ c.username | safe }}
+        </div>
 
 
-    <div class="comment-date">
-      {{c.created.strftime("%b %d, %Y")}}
+        <div class="comment-date">
+            {{ c.created.strftime("%b %d, %Y") }}
+        </div>
     </div>
-  </div>
 
-  <div class="comment-content">
-    {{c.comments | safe}}
-  </div>
+    <div class="comment-content">
+        {{ c.comments | safe }}
+    </div>
 </div>

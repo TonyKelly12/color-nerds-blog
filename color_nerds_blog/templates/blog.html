@@ -2,21 +2,22 @@
 
 {% block content %}
     <div class="postpage">
-    {% for p in posts %}
-    <div class="indipost">
-        {{ p.render() | safe }}
+        <div class="indipost">
+            {% for p in posts %}
 
-    </div>
-        <br><br>
-        <div class="comments">
-        {% for c in comments %}
-            {% if c.post_id == p.key.id()%}
-                {{ c.render() | safe }}
-            {% endif %}
+                {{ p.render() | safe }}
+
+                </div>
+                <br><br>
+                <div class="comments">
+                    {% for c in comments %}
+                        {% if c.post_id == p.key.id() %}
+                            {{ c.render() | safe }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% endfor %}
-        </div>
-    {% endfor %}
-      </div>
+    </div>
 
 
 {% endblock %}

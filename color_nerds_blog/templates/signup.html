@@ -1,27 +1,27 @@
 {% extends "index.html" %}
 
 {% block signup %}
-<h1>Sign Up For New Account</h1>
+    <h1>Sign Up For New Account</h1>
 
-    <br />
-<form method="post" class = "signup">
+    <br/>
+    <form method="post" class="signup">
 
-    <label>Email Address<br />
-        <input type="text" name="email" value="{{ email }}"></label><br/>
-    <label>Username<br />
-        <input type="text" name="username" value="{{ username }}"></label><br/>
-    <label>Password<br />
-        <input type="password" name="password" value="{{ password }}"></label><br/>
-    <label>ReEnter<br />
-        <input type="password" name="verify" value="{{ verify }}"></label>
-    <div>
-    <input type="submit">
+        <label>Email Address<br/>
+            <input type="text" name="email" value="{{ email }}"></label><br/>
+        <label>Username<br/>
+            <input type="text" name="username" value="{{ username }}"></label><br/>
+        <label>Password<br/>
+            <input type="password" name="password" value="{{ password }}"></label><br/>
+        <label>ReEnter<br/>
+            <input type="password" name="verify" value="{{ verify }}"></label>
+        <div>
+            <input type="submit">
+        </div>
+        <div>{{ error_signup }}</div>
+    </form>
     </div>
-    <div>{{ error_signup }}</div>
-</form>
-</div>
     <div class="col-md-12 color_nerd">
-    <img src="../static/img/png/color_nerd_bkgd.png" alt="colornerds" height="100%" width="100%">
+        <img src="../static/img/png/color_nerd_bkgd.png" alt="colornerds" height="100%" width="100%">
     </div>
 {% endblock %}
 
