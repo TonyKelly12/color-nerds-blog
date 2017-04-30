@@ -5,15 +5,15 @@
         {{ post.render() | safe }}
         <br><br>
     </div>
-    <div class="comment">
+ <div class="comment">
         {% for c in comments %}
-            {{ c.render() | safe }}
+           {{ c.render() | safe }}
             <br><br>
         {% endfor %}
     </div>
-    <br><br>
 
-    <div class="newpost_header"><h1>NEW POST</h1></div>
+
+<div class="newpost_header"><h1>NEW POST</h1></div>
     <div class="newpost_title"><h3>Title</h3></div>
     <div class="container">
         <div class="container-fluid">
@@ -37,5 +37,9 @@
             </form>
         </div>
     </div>
+
+            </div>
+        </div>
+
 
 {% endblock %}
