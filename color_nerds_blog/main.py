@@ -374,9 +374,9 @@ class EditPost(Handler):
 
 class EditComment(Handler):
     @login_required
-    def get(self, post_id):
+    def get(self, comment_id):
 
-        key = ndb.Key(Post, int(post_id), parent=blog_key())
+        key = ndb.Key(Comment, int(comment_id), parent=blog_key())
         comment = key.get()
 
         if not comment:
@@ -386,14 +386,14 @@ class EditComment(Handler):
         self.render("editComment.html", comment=comment, username=self.user.username)
 
     @c_edit_auth
-    def post(self, post_id):
-        commentkey = ndb.Key('Post', int(post_id), parent=blog_key())
+    def post(self, comment_id):
+        commentkey = ndb.Key('Post', int(comment_id), parent=blog_key())
         ecomment = commentkey.get()
         content = self.request.get("comment")
         if content:
             ecomment.content = content
             ecomment.put()
-        self.redirect('/blog/%s' % int(post_id))
+        self.redirect('/blog/%s' % int(comment_id))
 
 
 # New Post Page #
