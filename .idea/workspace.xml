@@ -38,8 +38,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/color_nerds_blog/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="369">
-                  <caret line="334" column="46" lean-forward="true" selection-start-line="334" selection-start-column="46" selection-end-line="334" selection-end-column="46" />
+                <state relative-caret-position="-2420">
+                  <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="40" selection-end-line="164" selection-end-column="40" />
                   <folding>
                     <element signature="e#52#61#0" expanded="true" />
                   </folding>
@@ -171,8 +171,8 @@
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/comment.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/post.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/editComment.html" />
-        <option value="$PROJECT_DIR$/color_nerds_blog/main.py" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/permalink.html" />
+        <option value="$PROJECT_DIR$/color_nerds_blog/main.py" />
       </list>
     </option>
   </component>
@@ -659,7 +659,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493592699519</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="trying to get the edit comments to work">
+      <created>1493594430047</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1493594430047</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1096,8 +1103,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/color_nerds_blog/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="334" column="46" lean-forward="true" selection-start-line="334" selection-start-column="46" selection-end-line="334" selection-end-column="46" />
+        <state relative-caret-position="-2420">
+          <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="40" selection-end-line="164" selection-end-column="40" />
           <folding>
             <element signature="e#52#61#0" expanded="true" />
           </folding>
