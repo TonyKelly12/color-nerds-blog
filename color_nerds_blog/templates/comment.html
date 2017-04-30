@@ -6,7 +6,7 @@
 
 
         <div class="comment-date">
-            {{ c.created.strftime("%b %d, %Y") }}
+          <a href="/comment/{{ c.key.id() }}">{{ c.created.strftime("%b %d, %Y") }}</a>
         </div>
     </div>
 

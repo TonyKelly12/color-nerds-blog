@@ -255,13 +255,6 @@ class Comment(ndb.Model):
     def by_id(cls, cid):
         return cls.get_by_id(cid, parent=comment_key())
 
-    #
-    ## this method allows lookup by name for user class
-    # @classmethod
-    # def by_comment_title(cls, comment_title):
-    #    c = cls.query().filter(cls.comment_title == comment_title).get()
-    #    return c
-
 
     def render(self):  # NOT Working
         self._render_text = self.comments.replace('\n', '<br>')
@@ -343,15 +336,15 @@ class PostPage(Handler):
         if comments:
             print "this is the comment:", comments
             key = ndb.Key('Post', int(post_id), parent=blog_key())
-            url = '/blog/%s' % int(post_id)
+            url = '/commentedit/%s' % int(post_id)
             c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username, url=url)
             c.put()
-            self.redirect('/blog/%s' % int(post_id)) #needs to refresh also
+            self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
 
 
 class EditPost(Handler):
     @login_required
-    @p_edit_auth
+
     def get(self, post_id):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
@@ -365,6 +358,7 @@ class EditPost(Handler):
         post._render_text = post.content.replace('\n', '<br>')
         self.render("editPost.html", post=post, comments=comments, username=self.user.username)
 
+    @p_edit_auth
     def post(self, post_id):
         postkey = ndb.Key('Post', int(post_id), parent=blog_key())
         post = postkey.get()
@@ -378,6 +372,29 @@ class EditPost(Handler):
 
         self.redirect('/blog/%s' % int(post_id))
 
+class EditComment(Handler):
+    @login_required
+
+    def get( self, post_id):
+
+        key = ndb.Key(Post, int(post_id),parent=blog_key())
+        comment = key.get()
+
+        if not comment:
+            self.error(404)
+            return
+        comment._render_text = comment.comments.replace('\n', '<br>')
+        self.render("editComment.html", comment=comment, username=self.user.username)
+
+    @c_edit_auth
+    def post(self, post_id):
+        commentkey = ndb.Key('Post', int(post_id), parent=blog_key())
+        ecomment = commentkey.get()
+        content = self.request.get("comment")
+        if content:
+            ecomment.content = content
+            ecomment.put()
+        self.redirect('/blog/%s' % int(post_id))
 
 
 # New Post Page #
@@ -544,6 +561,7 @@ app = webapp2.WSGIApplication([
     ("/blog/?", BlogPage),
     ("/blog/([0-9]+)", PostPage),
     ("/blog/newpost", NewPost),
-    ("/edit/([0-9]+)", EditPost)
+    ("/edit/([0-9]+)", EditPost),
+    ("/comment/([0-9]+)", EditComment)
 ],
     debug=True)
