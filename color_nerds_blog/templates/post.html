@@ -7,7 +7,7 @@
             {{ p.created.strftime("%b %d, %Y") }}
         </div>
         <div class="post-title">
-            {{ p.title }}
+          <a href="/blog/{{p.key.id()}}">{{ p.title }}</a>
         </div>
 
 
@@ -16,28 +16,16 @@
     <div class="post-content">
         {{ p.content | safe }}
     </div>
-    <br><br>
-</div>
-<br><br>
 
-
-<div class="comment">
+    <div class="comment">
     {% for c in comments %}
-        <div class="comment-heading">
-            <div class="comment-user">
-                {{ c.username | safe }}
-            </div>
-
-
-            <div class="comment-date">
-                {{ c.created.strftime("%b %d, %Y") }}
-            </div>
-        </div>
-
-        <div class="comment-content">
-            {{ c.comments | safe }}
-        </div>
+        {{ c.render() | safe }}
 
         <br><br>
     {% endfor %}
 </div>
+</div>
+<br><br>
+
+
+

@@ -18,16 +18,8 @@ from functools import wraps
 from string import letters
 from google.appengine.ext import ndb
 
-# from gcloud import datastore
-# gcloud environment variables
-# from oauth2client.client import GoogleCredentials
-# credentials = GoogleCredentials.get_application_default()
 
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
-# projectID = "color-nerds-blog"
-# os.environ["GCLOUD_TESTS_PROJECT_ID"] = projectID
-# os.environ["GCLOUD_TESTS_DATASET_ID"] = projectID
-# datastore.set_default_dataset_id(projectID)
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
@@ -103,6 +95,21 @@ def login_required(f):
 
     return wrap
 
+def p_edit_auth(f):
+    @wraps(f)
+    def wrap(self, *a, **kw):
+        if self.user.username == Post.username:
+            return f(self, *a, **kw)
+
+    return wrap
+
+def c_edit_auth(f):
+    @wraps(f)
+    def wrap(self, *a, **kw):
+        if self.user.username == Comment.username:
+            return f(self, *a, **kw)
+
+    return wrap
 
 
 
@@ -242,7 +249,7 @@ class Comment(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
     post_id = ndb.IntegerProperty(required=True)
-
+    url = ndb.StringProperty(required=True)
     # this functions adds line breaks in post content
     @classmethod
     def by_id(cls, cid):
@@ -257,7 +264,7 @@ class Comment(ndb.Model):
 
 
     def render(self):  # NOT Working
-        self._render_text = self.comments.replace('<br>', '\n')
+        self._render_text = self.comments.replace('\n', '<br>')
         return render_str("comment.html", c=self)
 
         # Post Page Permalink #
@@ -309,8 +316,8 @@ class Welcome(Handler):
 class BlogPage(Handler):
     @login_required
     def get(self):
-        posts = Post.query().order(Post.created).fetch(20)
-        comments = Comment.query().order(Comment.post_id)
+        posts = Post.query().order(-Post.created).fetch(20)
+        comments = Comment.query().order(-Comment.created)
         self.render("blog.html", posts=posts, username=self.user.username, comments=comments)
 
 
@@ -336,10 +343,41 @@ class PostPage(Handler):
         if comments:
             print "this is the comment:", comments
             key = ndb.Key('Post', int(post_id), parent=blog_key())
-
-            c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username)
+            url = '/blog/%s' % int(post_id)
+            c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username, url=url)
             c.put()
-            self.redirect('/blog/%s' % int(post_id))
+            self.redirect('/blog/%s' % int(post_id)) #needs to refresh also
+
+
+class EditPost(Handler):
+    @login_required
+    @p_edit_auth
+    def get(self, post_id):
+        key = ndb.Key(Post, int(post_id), parent=blog_key())
+        post = key.get()
+        comments = Comment.query().filter(Comment.post_id == int(post_id))
+        print "comments and post id", comments, post_id
+
+        if not post:
+            self.error(404)
+            return
+
+        post._render_text = post.content.replace('\n', '<br>')
+        self.render("editPost.html", post=post, comments=comments, username=self.user.username)
+
+    def post(self, post_id):
+        postkey = ndb.Key('Post', int(post_id), parent=blog_key())
+        post = postkey.get()
+        title = self.request.get("title")
+        content = self.request.get("content")
+
+        if title and content:
+            post.content = content
+            post.title = title
+            post.put()
+
+        self.redirect('/blog/%s' % int(post_id))
+
 
 
 # New Post Page #
@@ -353,8 +391,12 @@ class NewPost(Handler):
         title = self.request.get("title")
         content = self.request.get("content")
         if title and content:
+
             p = Post(parent=blog_key(), title=title, content=content, username=self.user.username)
+
             p.put()
+
+
             self.redirect('/blog/%s' % str(p.key.id()))
         else:
             error = "You need a title and a post"
@@ -501,7 +543,7 @@ app = webapp2.WSGIApplication([
     ("/logout", Logout),
     ("/blog/?", BlogPage),
     ("/blog/([0-9]+)", PostPage),
-    ("/blog/newpost", NewPost)
-
+    ("/blog/newpost", NewPost),
+    ("/blog/edit/([0-9]+)", EditPost)
 ],
     debug=True)

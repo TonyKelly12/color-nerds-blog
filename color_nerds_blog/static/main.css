@@ -698,8 +698,8 @@ a.button {
 .signup,
 .postpage,
 .main {
-    height: 100%;
-    color: whitesmoke;
+    max-height: 100%;
+    color: black;
     text-align: center;
 
 }
@@ -746,23 +746,7 @@ a.button {
 
 }
 
-.img-upload p {
-    text-align: left;
-    color: cadetblue;
-}
 
-.img-upload input {
-    color: cadetblue;
-}
-
-.mp3-upload p {
-    text-align: left;
-    color: cadetblue;
-}
-
-.mp3-upload input {
-    color: cadetblue;
-}
 
 .newpost_header h1 {
     color: cadetblue;
@@ -781,12 +765,22 @@ a.button {
 .indipost {
 
     font-family: "Lucida Calligraphy";
-
+    margin: auto;
+    padding: -50px;
 }
 
 .post {
     color: #b3d4fc;
     background-color: #222222;
+    display: block;
+    margin: auto;
+    padding: 50px;
+    width:65%;
+    max-height: 100% ;
+}
+
+.comment{
+    display: block;
 }
 
 .post-title {
@@ -797,5 +791,11 @@ a.button {
     font-size: 28px;
 }
 
+
+
+.indicomment{
+    margin: auto;
+    padding-bottom: 50px;
+}
 
 
