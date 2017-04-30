@@ -341,6 +341,15 @@ class PostPage(Handler):
             c.put()
             self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
 
+    @c_edit_auth
+    def post(self, post_id):
+        commentkey = ndb.Key('Post', int(post_id), parent=blog_key())
+        ecomment = commentkey.get()
+        content = self.request.get("ecomment")
+        if content:
+            ecomment.content = content
+            ecomment.put()
+        self.redirect('/blog/%s' % int(post_id))
 
 class EditPost(Handler):
     @login_required
