@@ -18,6 +18,8 @@ from functools import wraps
 from string import letters
 from google.appengine.ext import ndb
 
+
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
@@ -93,7 +95,6 @@ def login_required(f):
 
     return wrap
 
-
 def p_edit_auth(f):
     @wraps(f)
     def wrap(self, *a, **kw):
@@ -101,7 +102,6 @@ def p_edit_auth(f):
             return f(self, *a, **kw)
 
     return wrap
-
 
 def c_edit_auth(f):
     @wraps(f)
@@ -250,11 +250,11 @@ class Comment(ndb.Model):
     last_mod = ndb.DateTimeProperty(auto_now=True)
     post_id = ndb.IntegerProperty(required=True)
     url = ndb.StringProperty(required=True)
-
     # this functions adds line breaks in post content
     @classmethod
     def by_id(cls, cid):
         return cls.get_by_id(cid, parent=comment_key())
+
 
     def render(self):  # NOT Working
         self._render_text = self.comments.replace('\n', '<br>')
@@ -339,11 +339,12 @@ class PostPage(Handler):
             url = '/commentedit/%s' % int(post_id)
             c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username, url=url)
             c.put()
-            self.redirect('/comment/%s' % str(c.key.id()))  # needs to refresh also
+            self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
 
 
 class EditPost(Handler):
     @login_required
+
     def get(self, post_id):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
@@ -371,12 +372,12 @@ class EditPost(Handler):
 
         self.redirect('/blog/%s' % int(post_id))
 
-
 class EditComment(Handler):
     @login_required
-    def get(self, comment_id):
 
-        key = ndb.Key(Comment, int(comment_id), parent=blog_key())
+    def get( self, post_id):
+
+        key = ndb.Key(Post, int(post_id),parent=blog_key())
         comment = key.get()
 
         if not comment:
@@ -386,14 +387,14 @@ class EditComment(Handler):
         self.render("editComment.html", comment=comment, username=self.user.username)
 
     @c_edit_auth
-    def post(self, comment_id):
-        commentkey = ndb.Key('Post', int(comment_id), parent=blog_key())
+    def post(self, post_id):
+        commentkey = ndb.Key('Post', int(post_id), parent=blog_key())
         ecomment = commentkey.get()
         content = self.request.get("comment")
         if content:
             ecomment.content = content
             ecomment.put()
-        self.redirect('/blog/%s' % int(comment_id))
+        self.redirect('/blog/%s' % int(post_id))
 
 
 # New Post Page #
@@ -411,6 +412,7 @@ class NewPost(Handler):
             p = Post(parent=blog_key(), title=title, content=content, username=self.user.username)
 
             p.put()
+
 
             self.redirect('/blog/%s' % str(p.key.id()))
         else:
