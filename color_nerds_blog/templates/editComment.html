@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <form method="post" class="comment">
 
-
+                    {% if username == c.username %}
                     <div class="col-md-12 comment_entry">
                         <textarea name="comment">{{ c.comment }}</textarea>
                     </div>
@@ -17,7 +17,7 @@
                     <div class="col-md-12 submit_comment">
                         <input type="submit">
                     </div>
-
+                    {% endif %}
                 </form>
         </div>
     </div>
