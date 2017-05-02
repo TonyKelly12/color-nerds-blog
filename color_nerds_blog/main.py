@@ -76,12 +76,12 @@ def user_key(group='default'):
 
 # this function builds the post key
 def post_key(group='default'):
-    return ndb.Key('Post', group, parent=user_key.key)
+    return ndb.Key('Post', group, parent=user_key)
 
 
 # this function builds the comment key
 def comment_key(group='default'):
-    return ndb.Key('Comment', group, parent=post_key.key)
+    return ndb.Key('Comment', group, parent=post_key)
 
 
 def login_required(f):
@@ -256,8 +256,8 @@ class Comment(ndb.Model):
         return cls.get_by_id(cid, parent=comment_key())
 
 
-    def render(self):  # NOT Working
-        self._render_text = self.comments.replace('\n', '<br>')
+    def render(self):
+        self._render_text = self.comments.replace('\n', '<br>')# NOT Working
         return render_str("comment.html", c=self)
 
         # Post Page Permalink #
@@ -337,7 +337,7 @@ class PostPage(Handler):
             print "this is the comment:", comments
             key = ndb.Key('Post', int(post_id), parent=blog_key())
             url = '/commentedit/%s' % int(post_id)
-            c = Comment(parent=key, comments=comments, post_id=int(post_id), username=self.user.username, url=url)
+            c = Comment(comments=comments, post_id=int(post_id), username=self.user.username, url=url)
             c.put()
             self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
 
@@ -375,26 +375,27 @@ class EditPost(Handler):
 class EditComment(Handler):
     @login_required
 
-    def get( self, post_id):
+    def get( self, comment_id):
 
-        key = ndb.Key(Post, int(post_id),parent=blog_key())
-        comment = key.get()
+        commentkey = ndb.Key('Comment', int(comment_id))
+        ecomment = commentkey.get()
 
-        if not comment:
+        if not ecomment:
             self.error(404)
             return
-        comment._render_text = comment.comments.replace('\n', '<br>')
-        self.render("editComment.html", comment=comment, username=self.user.username)
+
+        ecomment._render_text = ecomment.comments.replace('\n', '<br>')
+        self.render("editComment.html", c=ecomment, username=self.user.username)
 
     @c_edit_auth
-    def post(self, post_id):
-        commentkey = ndb.Key('Post', int(post_id), parent=blog_key())
+    def post(self, comment_id):
+        commentkey = ndb.Key('Comment', int(comment_id))
         ecomment = commentkey.get()
         content = self.request.get("comment")
         if content:
-            ecomment.content = content
+            ecomment.comments = content
             ecomment.put()
-        self.redirect('/blog/%s' % int(post_id))
+        self.redirect('/comment/%s' % str(ecomment.key.id()))
 
 
 # New Post Page #

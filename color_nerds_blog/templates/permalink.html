@@ -8,11 +8,7 @@
  <div class="comment">
         {% for c in comments %}
            {{ c.render() | safe }}
-            <div class="editbutoon">
-    {% if c.username == username %}
-                <button><a href="/comment/{{ c.key.id() }}">Edit Post</a> </button>
-                {% endif %}
-</div>
+
             <br><br>
         {% endfor %}
     </div>
