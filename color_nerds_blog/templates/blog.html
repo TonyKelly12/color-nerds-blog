@@ -5,21 +5,23 @@
         <div class="indipost">
             {% for p in posts %}
                 {{ p.render() | safe }}
-                    <br><br>
+                <br><br>
+
                 <div class="indicomment">
                     {% for c in comments %}
                         {% if c.post_id == p.key.id() %}
                             {{ c.render() | safe }}
                             <br><br>
                         {% endif %}
+
                     {% endfor %}
                 </div>
                 <br><br>
             {% endfor %}
         </div>
-    <div class="newcomment">
+        <div class="newcomment">
 
-    </div>
+        </div>
     </div>
     <br><br>
 

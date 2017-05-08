@@ -5,34 +5,51 @@
         {{ post.render() | safe }}
         <br><br>
     </div>
- <div class="comment">
+    <div class="comment">
         {% for c in comments %}
-           {{ c.render() | safe }}
+            {{ c.render() | safe }}
 
             <br><br>
         {% endfor %}
     </div>
+    {% if username != post.username %}
         <div class="container">
             <div class="container-fluid">
-                <form method="post" class="comment">
+                <form method="post" class="likes">
+                    <input type="checkbox" value="likes">
 
-
-                    <div class="col-md-12 comment_entry">
-                        <textarea name="comment">{{ comment }}</textarea>
+                    <div class="col-md-12 submit_likes">
+                        <input type="submit" value="likes">
                     </div>
 
-                    <div class="col-md-12 submit_comment">
-                        <input type="submit">
-                    </div>
-                {% if username == post.username %}
-                <button><a href="/edit/{{post.key.id()}}">Edit Post</a> </button>
-                {% endif %}
                 </form>
-
 
 
             </div>
         </div>
+
+
+    {% endif %}
+    <div class="container">
+        <div class="container-fluid">
+            <form method="post" class="comment">
+
+
+                <div class="col-md-12 comment_entry">
+                    <textarea name="comment">{{ comment }}</textarea>
+                </div>
+
+                <div class="col-md-12 submit_comment">
+                    <input type="submit">
+                </div>
+                {% if username == post.username %}
+                    <button><a href="/edit/{{ post.key.id() }}">Edit Post</a></button>
+                {% endif %}
+            </form>
+
+
+        </div>
+    </div>
 
 
 {% endblock %}

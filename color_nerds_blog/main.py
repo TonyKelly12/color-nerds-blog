@@ -214,7 +214,8 @@ class Post(ndb.Model):
     content = ndb.TextProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
-    username = ndb.StringProperty(required=False)
+    username = ndb.StringProperty(required=True)
+    likes = ndb.IntegerProperty(required=True, default=0)
 
     # this method allows lookup by id for user class
     @classmethod
@@ -233,6 +234,11 @@ class Post(ndb.Model):
         self._render_text = self.content.replace('<br>', '\n')
         return render_str("post.html", p=self)
 
+    def like_count(self):
+        self.like = self.like + 1
+        return self.like
+
+
 
 
 
@@ -249,7 +255,7 @@ class Comment(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_mod = ndb.DateTimeProperty(auto_now=True)
     post_id = ndb.IntegerProperty(required=True)
-    url = ndb.StringProperty(required=True)
+
     # this functions adds line breaks in post content
     @classmethod
     def by_id(cls, cid):
@@ -261,6 +267,10 @@ class Comment(ndb.Model):
         return render_str("comment.html", c=self)
 
         # Post Page Permalink #
+
+class Likes(ndb.Model):
+    username = ndb.StringProperty(required=True)
+    post_id = ndb.IntegerProperty(required=True)
 
 
 
@@ -313,6 +323,10 @@ class BlogPage(Handler):
         comments = Comment.query().order(-Comment.created)
         self.render("blog.html", posts=posts, username=self.user.username, comments=comments)
 
+    def post(self, post_id):
+        key = ndb.Key('Post', int(post_id), parent=blog_key())
+        posts = key.get()
+
 
 # Post Page Permalink #
 
@@ -333,13 +347,32 @@ class PostPage(Handler):
 
     def post(self, post_id):
         comments = self.request.get('comment')
+        likes = self.request.get('likes')
+
         if comments:
             print "this is the comment:", comments
             key = ndb.Key('Post', int(post_id), parent=blog_key())
-            url = '/commentedit/%s' % int(post_id)
-            c = Comment(comments=comments, post_id=int(post_id), username=self.user.username, url=url)
+            post = key.get()
+            c = Comment(comments=comments, post_id=int(post_id), username=self.user.username)
             c.put()
             self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
+
+        elif likes:
+            key = ndb.Key('Post', int(post_id), parent=blog_key())
+            post = key.get()
+            l = Likes(username=self.user.username, post_id=post_id, parent=blog_key())
+            post.likes += 1
+            l.put()
+            post.put()
+
+            self.redirect('/')
+
+
+
+
+
+
+
 
 
 class EditPost(Handler):
@@ -419,6 +452,8 @@ class NewPost(Handler):
         else:
             error = "You need a title and a post"
             self.render("newpost.html", title=title, content=content, error=error, username=self.user.username)
+
+
 
 
 # Login Page #
@@ -563,6 +598,8 @@ app = webapp2.WSGIApplication([
     ("/blog/([0-9]+)", PostPage),
     ("/blog/newpost", NewPost),
     ("/edit/([0-9]+)", EditPost),
-    ("/comment/([0-9]+)", EditComment)
+    ("/comment/([0-9]+)", EditComment),
+    ("/likes", Likes)
+
 ],
     debug=True)

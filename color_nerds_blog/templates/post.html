@@ -17,6 +17,12 @@
         {{ p.content | safe }}
     </div>
 
+    <div class="post-likes">
+        {{ p.likes | safe }}
+    </div>
+
+
+
     <div class="comment">
     {% for c in comments %}
         {{ c.render() | safe }}
@@ -24,6 +30,7 @@
         <br><br>
     {% endfor %}
 </div>
+
 </div>
 <br><br>
 
