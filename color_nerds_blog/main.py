@@ -18,8 +18,6 @@ from functools import wraps
 from string import letters
 from google.appengine.ext import ndb
 
-
-
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
@@ -95,6 +93,7 @@ def login_required(f):
 
     return wrap
 
+
 def p_edit_auth(f):
     @wraps(f)
     def wrap(self, *a, **kw):
@@ -102,6 +101,7 @@ def p_edit_auth(f):
             return f(self, *a, **kw)
 
     return wrap
+
 
 def c_edit_auth(f):
     @wraps(f)
@@ -261,12 +261,12 @@ class Comment(ndb.Model):
     def by_id(cls, cid):
         return cls.get_by_id(cid, parent=comment_key())
 
-
     def render(self):
-        self._render_text = self.comments.replace('\n', '<br>')# NOT Working
+        self._render_text = self.comments.replace('\n', '<br>')  # NOT Working
         return render_str("comment.html", c=self)
 
         # Post Page Permalink #
+
 
 class Likes(ndb.Model):
     username = ndb.StringProperty(required=True)
@@ -276,7 +276,7 @@ class Likes(ndb.Model):
 
 
 
-        ###  Main Index  ###
+    ###  Main Index  ###
 
 
 class Index(Handler):
@@ -348,36 +348,34 @@ class PostPage(Handler):
     def post(self, post_id):
         comments = self.request.get('comment')
         likes = self.request.get('likes')
-
+        print likes
         if comments:
             print "this is the comment:", comments
             key = ndb.Key('Post', int(post_id), parent=blog_key())
             post = key.get()
             c = Comment(comments=comments, post_id=int(post_id), username=self.user.username)
             c.put()
-            self.redirect('/comment/%s' % str(c.key.id())) #needs to refresh also
+            self.redirect('/comment/%s' % str(c.key.id()))  # needs to refresh also
 
-        elif likes:
+        if likes:
             key = ndb.Key('Post', int(post_id), parent=blog_key())
             post = key.get()
-            l = Likes(username=self.user.username, post_id=post_id, parent=blog_key())
-            post.likes += 1
+            l = Likes(username=self.user.username, post_id=int(likes), parent=blog_key())
             l.put()
-            post.put()
-
-            self.redirect('/')
-
-
-
+            like_query = Likes.query().filter(Likes.post_id == post.key.id())
+            for lk in like_query:
+                post.likes += 1
+            return post.put()
 
 
 
+            self.redirect('/blog/%s' % int(post_id))
 
-
+        else:
+            self.render('welcome.html', message='likes is null')
 
 class EditPost(Handler):
     @login_required
-
     def get(self, post_id):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
@@ -405,10 +403,10 @@ class EditPost(Handler):
 
         self.redirect('/blog/%s' % int(post_id))
 
+
 class EditComment(Handler):
     @login_required
-
-    def get( self, comment_id):
+    def get(self, comment_id):
 
         commentkey = ndb.Key('Comment', int(comment_id))
         ecomment = commentkey.get()
@@ -447,13 +445,10 @@ class NewPost(Handler):
 
             p.put()
 
-
             self.redirect('/blog/%s' % str(p.key.id()))
         else:
             error = "You need a title and a post"
             self.render("newpost.html", title=title, content=content, error=error, username=self.user.username)
-
-
 
 
 # Login Page #

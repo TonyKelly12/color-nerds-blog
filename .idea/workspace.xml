@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a64232dd-ad3c-4b85-844c-0b8a5240ab6a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/color_nerds_blog/templates/likes.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/color_nerds_blog/index.yaml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/color_nerds_blog/main.py" afterPath="$PROJECT_DIR$/color_nerds_blog/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/color_nerds_blog/templates/blog.html" afterPath="$PROJECT_DIR$/color_nerds_blog/templates/blog.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/color_nerds_blog/templates/permalink.html" afterPath="$PROJECT_DIR$/color_nerds_blog/templates/permalink.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/color_nerds_blog/templates/post.html" afterPath="$PROJECT_DIR$/color_nerds_blog/templates/post.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/color_nerds_blog/templates/welcome.html" afterPath="$PROJECT_DIR$/color_nerds_blog/templates/welcome.html" />
     </list>
     <list id="27a90e63-420a-41f5-97ac-ce6e26c03710" name="Revert: comments working and parsed per post" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,27 +35,17 @@
     <favorites_list name="Blogg App" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.52024925">
+    <splitter split-orientation="horizontal" split-proportion="0.51897323">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/color_nerds_blog/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="261">
-                  <caret line="36" column="40" lean-forward="true" selection-start-line="36" selection-start-column="40" selection-end-line="36" selection-end-column="40" />
+                <state relative-caret-position="1248">
+                  <caret line="367" column="29" lean-forward="true" selection-start-line="367" selection-start-column="29" selection-end-line="367" selection-end-column="29" />
                   <folding>
                     <element signature="e#52#61#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="welcome.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/welcome.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="20">
-                  <caret line="1" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="14" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -113,6 +100,16 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="welcome.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/welcome.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="315">
+                  <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -120,8 +117,8 @@
           <file leaf-file-name="permalink.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/permalink.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="500">
-                  <caret line="34" column="15" lean-forward="false" selection-start-line="34" selection-start-column="15" selection-end-line="34" selection-end-column="15" />
+                <state relative-caret-position="228">
+                  <caret line="18" column="61" lean-forward="false" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="62" />
                   <folding />
                 </state>
               </provider>
@@ -215,7 +212,6 @@
         <option value="$PROJECT_DIR$/color_nerds_blog/static/main.js" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/newpost.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/login-name.html" />
-        <option value="$PROJECT_DIR$/color_nerds_blog/templates/welcome.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/login.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/signup.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/main.html" />
@@ -228,6 +224,7 @@
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/post.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/likes.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/blog.html" />
+        <option value="$PROJECT_DIR$/color_nerds_blog/templates/welcome.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/templates/permalink.html" />
         <option value="$PROJECT_DIR$/color_nerds_blog/main.py" />
       </list>
@@ -243,10 +240,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="-12" />
+    <option name="y" value="-12" />
+    <option name="width" value="3384" />
+    <option name="height" value="1844" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -327,8 +324,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -758,7 +755,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493689355510</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Bug in Likes Model">
+      <created>1494205337904</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1494205337904</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -774,9 +778,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-12" y="-12" width="3384" height="1844" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1444563" sideWeight="0.4970364" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09811091" sideWeight="0.4970364" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33694476" sideWeight="0.5073126" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -784,7 +789,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25568798" sideWeight="0.49268737" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="true" show_stripe_button="true" weight="0.22535211" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="198" y="332" width="1052" height="496" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.22518611" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="198" y="332" width="1052" height="496" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14375" sideWeight="0.5029636" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31419286" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -852,7 +857,8 @@
     <MESSAGE value="edit post working" />
     <MESSAGE value="trying to get the edit comments to work" />
     <MESSAGE value="Fixed editing comments." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed editing comments." />
+    <MESSAGE value="Bug in Likes Model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug in Likes Model" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1129,30 +1135,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/post.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/welcome.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/likes.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/newpost.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="580">
@@ -1170,18 +1152,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/welcome.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/permalink.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="34" column="15" lean-forward="false" selection-start-line="34" selection-start-column="15" selection-end-line="34" selection-end-column="15" />
+        <state relative-caret-position="228">
+          <caret line="18" column="61" lean-forward="false" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/post.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/color_nerds_blog/templates/likes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/color_nerds_blog/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="36" column="40" lean-forward="true" selection-start-line="36" selection-start-column="40" selection-end-line="36" selection-end-column="40" />
+        <state relative-caret-position="1248">
+          <caret line="367" column="29" lean-forward="true" selection-start-line="367" selection-start-column="29" selection-end-line="367" selection-end-column="29" />
           <folding>
             <element signature="e#52#61#0" expanded="true" />
           </folding>
