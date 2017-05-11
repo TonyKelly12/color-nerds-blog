@@ -360,19 +360,30 @@ class PostPage(Handler):
         if likes:
             key = ndb.Key('Post', int(post_id), parent=blog_key())
             post = key.get()
-            l = Likes(username=self.user.username, post_id=int(likes), parent=blog_key())
-            l.put()
-            like_query = Likes.query().filter(Likes.post_id == post.key.id())
-            for lk in like_query:
-                post.likes += 1
-            return post.put()
+
+            like_Nquery = Likes.query().filter(Likes.username == self.user.username)
+
+            for nlike in like_Nquery:
+                if any(nlike.username == self.user.username):
+                    msg = 'No Double Dipping, Like a different post!'
+                    self.render("permalink.html", error=msg)
+
+
+                else:
+                    l = Likes(username=self.user.username, post_id=int(likes), parent=blog_key())
+                    l.put()
+                    like_query = Likes.query().filter(Likes.post_id == post.key.id())
+                    like_count = like_query.count()
+                    post.likes = int(like_count)
+                    post.put()
 
 
 
-            self.redirect('/blog/%s' % int(post_id))
+
+            self.redirect('/blog/%s' % int(post_id) )
 
         else:
-            self.render('welcome.html', message='likes is null')
+            self.render('welcome.html' )
 
 class EditPost(Handler):
     @login_required
