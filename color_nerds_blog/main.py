@@ -336,6 +336,7 @@ class PostPage(Handler):
         key = ndb.Key(Post, int(post_id), parent=blog_key())
         post = key.get()
         comments = Comment.query().filter(Comment.post_id == int(post_id))
+
         print "comments and post id", comments, post_id
 
         if not post:
@@ -348,6 +349,7 @@ class PostPage(Handler):
     def post(self, post_id):
         comments = self.request.get('comment')
         likes = self.request.get('likes')
+
         print likes
         if comments:
             print "this is the comment:", comments
@@ -360,17 +362,14 @@ class PostPage(Handler):
         if likes:
             key = ndb.Key('Post', int(post_id), parent=blog_key())
             post = key.get()
-
+            l = Likes(username=self.user.username, post_id=int(likes), parent=blog_key())
             like_Nquery = Likes.query().filter(Likes.username == self.user.username)
-
-            for nlike in like_Nquery:
-                if any(nlike.username == self.user.username):
-                    msg = 'No Double Dipping, Like a different post!'
-                    self.render("permalink.html", error=msg)
-
+            for lk in like_Nquery:
+                if any(lk.username) != lk.username:######PRoblem here
+                    msg = "No Double Dipping, Like a different post!"
+                    self.render("permalink.html", error=msg, post=post, comments=comments, username=self.user.username)
 
                 else:
-                    l = Likes(username=self.user.username, post_id=int(likes), parent=blog_key())
                     l.put()
                     like_query = Likes.query().filter(Likes.post_id == post.key.id())
                     like_count = like_query.count()
@@ -383,7 +382,7 @@ class PostPage(Handler):
             self.redirect('/blog/%s' % int(post_id) )
 
         else:
-            self.render('welcome.html' )
+            self.render('welcome.html')
 
 class EditPost(Handler):
     @login_required
