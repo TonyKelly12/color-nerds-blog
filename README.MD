@@ -18,8 +18,8 @@ auto scrolling animation.
     **_npm install_**
     
 - Start the Python development server by running the following commands
-        - $ cd color_nerds_blog (change into the color_nerds_blog directory)
-        - $ dev_appserver.py app.yaml
+    - $ cd color_nerds_blog (change into the color_nerds_blog directory)
+    - $ dev_appserver.py app.yaml
 
 
 # Known Issues/Bugs
