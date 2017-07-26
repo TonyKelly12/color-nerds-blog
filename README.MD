@@ -15,7 +15,7 @@
     - **NodeJs required**
 
     - Install the package.json file by running the command
-        **_npm install_**
+        ** _npm install_ **
     
     - Start the Python development server by running the following commands
         - $ cd color_nerds_blog (change into the color_nerds_blog directory)
