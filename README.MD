@@ -10,7 +10,7 @@
 
 # Installation
 
-    - **PYTHON 2.7.* required**
+    - ** PYTHON 2.7.* required **
 
     - **NodeJs required**
 
