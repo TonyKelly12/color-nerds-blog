@@ -10,7 +10,7 @@ auto scrolling animation.
 
 # Installation
 
-- **PYTHON 2.7 required**
+- **PYTHON latest version required**
 
 - **NodeJs required**
 
